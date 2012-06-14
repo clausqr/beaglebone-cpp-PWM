@@ -1,5 +1,5 @@
-beaglebone-cPWM
-===============
+beaglebone-cpp-PWM
+==================
 
 beaglebone C++ wrapper for the PWM subsystem
 
