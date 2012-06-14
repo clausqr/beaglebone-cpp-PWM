@@ -7,6 +7,7 @@
   */
 #include "cPWM.h"
 #include <iostream>
+#include <unistd.h>
 using namespace std;
 
 int main()
@@ -20,13 +21,12 @@ int main()
 		a[i] = new cPWM::cPWM(i);
 	}
 
-	a[0]->DutyA(100);
-	a[0]->DutyB(150);
-	a[0]->Period(120);
+	a[0]->Period(20000000);
+	a[0]->DutyA(  1000000);
 	a[0]->Polarity(1);
 	a[0]->Run();
-	a[0]->DutyB(160);
-	a[0]->DutyA(231);
+	usleep(100000);	//pausa de 0.1s=100,000us
+	a[0]->DutyA( 1500000);
 	a[0]->Stop();
 	for (int i=0; i<3; i++)
 	{

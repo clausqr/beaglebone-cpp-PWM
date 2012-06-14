@@ -46,13 +46,19 @@ beaglebone-cpp-PWM: $(OBJS) $(USER_OBJS)
 	arm-linux-gnueabihf-g++ -L/usr/arm-linux-gnueabihf/lib -o "beaglebone-cpp-PWM" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
+	$(MAKE) --no-print-directory post-build
 
 # Other Targets
 clean:
 	-$(RM) $(C++_DEPS)$(OBJS)$(C_DEPS)$(CC_DEPS)$(CPP_DEPS)$(EXECUTABLES)$(CXX_DEPS)$(C_UPPER_DEPS) beaglebone-cpp-PWM
 	-@echo ' '
 
+post-build:
+	-@echo 'copy binary over to beaglebone'
+	-scp /home/claus/workspace/beaglebone-cpp-PWM/Debug/beaglebone-cpp-PWM beaglebone.local:
+	-@echo ' '
+
 .PHONY: all clean dependents
-.SECONDARY:
+.SECONDARY: post-build
 
 -include ../makefile.targets
