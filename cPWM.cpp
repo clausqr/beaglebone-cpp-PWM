@@ -21,6 +21,8 @@ namespace cPWM {
 //Constructor, n is the id of the PWMSS
 cPWM::cPWM(int id)
 {
+	///TODO: 	Add clock selection (mmap). By now you must use setPWMReg.py method
+	///FIXME:	pin mux settings should be done here? or at a highet level?
 	std::cout << "called cPWM constructor" << std::endl;
 	cPWM::id = id;
 
