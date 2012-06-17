@@ -18,7 +18,10 @@ private:
 	int dutyA;
 	int dutyB;
 	int period;
-	int polarity;
+	int polarityA;
+	int polarityB;
+	int runA;
+	int runB;
 	/*****************************************
 ehrpwm.0:0
 │   ├── duty_ns
@@ -48,9 +51,12 @@ std::stringstream sysfs_file;
 		std::ofstream sysfsfid_dutyA;
 		std::ofstream sysfsfid_dutyB;
 		std::ofstream sysfsfid_period;
-		std::ofstream sysfsfid_polarity;
-		std::ofstream sysfsfid_run;
-		std::ofstream sysfsfid_request;
+		std::ofstream sysfsfid_polarityA;
+		std::ofstream sysfsfid_runA;
+		std::ofstream sysfsfid_requestA;
+		std::ofstream sysfsfid_polarityB;
+		std::ofstream sysfsfid_runB;
+		std::ofstream sysfsfid_requestB;
 
 
 public:
@@ -60,9 +66,12 @@ public:
 	int DutyA(int d);
 	int DutyB(int d);
 	int Period(int d);
-	int Polarity(int d);
-	int Run();
-	int Stop();
+	int PolarityA(int d);
+	int RunA();
+	int StopA();
+	int PolarityB(int d);
+	int RunB();
+	int StopB();
 };
 
 } /* namespace cPWM */
