@@ -16,7 +16,7 @@ p.Period(20000000);   //set period to 20ms (the period is in ns)
 
 p.DutyA(1500000);     //set duty cycle of eHRPWM1A pin to 1.5ms
 
-p.Run();              //go!
+p.RunA();            //go!
 
 
 It also lacks the clock setup, and you should run the awesome setPWMReg.py from dwatts' http://www.gigamegablog.com/ prior to using this class, and configure the pin mux according to your liking.
