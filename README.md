@@ -19,4 +19,5 @@ p.DutyA(1500000);     //set duty cycle of eHRPWM1A pin to 1.5ms
 p.Run();              //go!
 
 
-It also lacks the clock setup, and you should run setPWMReg.py prior to using this class, and configure the pin mux according to your liking.
+It also lacks the clock setup, and you should run the awesome setPWMReg.py from dwatts' http://www.gigamegablog.com/ prior to using this class, and configure the pin mux according to your liking.
+I think the pin mux configuration is something wider than the PWM subsystem, so it's OK to do it this way.
