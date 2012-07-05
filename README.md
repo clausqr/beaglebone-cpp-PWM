@@ -21,3 +21,7 @@ p.RunA();            //go!
 
 It also lacks the clock setup, and you should run the awesome setPWMReg.py from dwatts' http://www.gigamegablog.com/ prior to using this class, and configure the pin mux according to your liking.
 I think the pin mux configuration is something wider than the PWM subsystem, so it's OK to do it this way.
+
+License is use it as you like it but if you do something cool with the beaglebone involving PWM I'd love to know!
+
+This repo is part of a larger project http://quadrotordiaries.blogspot.com
