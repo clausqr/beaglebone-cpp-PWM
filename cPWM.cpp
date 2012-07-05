@@ -1,12 +1,16 @@
-/*
- * cPWM.cpp
+// $Id$
+/**
+ * @file cPWM.cpp
+ * Simple C++ class wrapper for beaglebone PWM eHRPWM interface
  *
+ * @author claus
  *  Created on: Jun 13, 2012
- *      Author: claus
- *
- *  Simple c++ class wrapper for beaglebone PWM eHRPWM interface
+ *      Author: claus http://quadrotordiaries.blogspot.com
  *
  */
+// $Log$
+
+///  Simple C++ class wrapper for beaglebone PWM eHRPWM interface
 
 #include "cPWM.h"
 #include <iostream>
@@ -18,7 +22,19 @@
 namespace cPWM {
 
 
-//Constructor, n is the id of the PWMSS
+/**
+ * This class wraps the PWMss of the beaglebone,
+ * but it accesses the PWMss by means of the sysfs interface,
+ * so probably other systems are supported as well.
+ * The sysfs filenames are defined in cPWM.h.
+ * The constructor just opens the sysfs files but doesn't write anything,
+ * so in order to properly use the PWMss you need to follow all the steps
+ * (frequency, period, polarity) before calling run.
+ *
+ * @param[in]	id	id of the PWMss to be initializaed. There are 3 of them, eHRPWM0 thru 2.
+ * @return		a cPWM object
+ *
+ */
 cPWM::cPWM(int id)
 {
 	///TODO: 	Add clock selection (mmap). By now you must use setPWMReg.py method
@@ -70,6 +86,12 @@ cPWM::cPWM(int id)
 
 }
 
+/**
+ * Set the duty cycle for A channel of the PWMss
+ *
+ * @param[in]	d	duty cycle time in nanoseconds for A channel
+ *
+ */
 int cPWM::DutyA(int d)
 {
 		std::cout << "PWM"<< id << "A, duty cycle set to " << d << std::endl;
@@ -77,6 +99,13 @@ int cPWM::DutyA(int d)
 		sysfsfid_dutyA << d << std::endl;
 		return 1;
 	}
+
+/**
+ * Set the duty cycle for B channel of the PWMss
+ *
+ * @param[in]	d	duty cycle time in nanoseconds for B channel
+ *
+ */
 int cPWM::DutyB(int d)
 {
 		std::cout << "PWM"<< id << "B, duty cycle set to " << d << std::endl;
@@ -86,8 +115,11 @@ int cPWM::DutyB(int d)
 	}
 
 
-/*
- * Period in ns
+/**
+ * Set the period for the PWMss
+ *
+ * @param[in]	d	period time in nanoseconds
+ *
  */
 int cPWM::Period(int d)
 {
@@ -97,6 +129,12 @@ int cPWM::Period(int d)
 		return 1;
 	}
 
+/**
+ * Set the polarity for the A channel of the PWMss
+ *
+ * @param[in]	d	polarity
+ *
+ */
 int cPWM::PolarityA(int d)
 {
 		std::cout << "PWMA"<< id << ", polarity set to " << d << std::endl;
@@ -105,6 +143,11 @@ int cPWM::PolarityA(int d)
 		return 1;
 	}
 
+/**
+ * Set the A channel to run status
+ *
+ *
+ */
 int cPWM::RunA()
 {
 	std::cout << "PWMA"<< id << " started" << std::endl;
@@ -113,6 +156,11 @@ int cPWM::RunA()
 	return 1;
 }
 
+/**
+ * Stop the A channel
+ *
+ *
+ */
 int cPWM::StopA()
 {
 	std::cout << "PWMA"<< id << " stopped" << std::endl;
@@ -121,6 +169,12 @@ int cPWM::StopA()
 	return 1;
 }
 
+/**
+ * Set the polarity for the B channel of the PWMss
+ *
+ * @param[in]	d	polarity
+ *
+ */
 int cPWM::PolarityB(int d)
 {
 		std::cout << "PWMB"<< id << ", polarity set to " << d << std::endl;
@@ -128,6 +182,11 @@ int cPWM::PolarityB(int d)
 		sysfsfid_polarityB << d << std::endl;
 		return 1;
 	}
+
+/**
+ * Set the B channel to run
+ *
+ */
 
 int cPWM::RunB()
 {
@@ -137,6 +196,10 @@ int cPWM::RunB()
 	return 1;
 }
 
+/**
+ * Stop the B channel
+ *
+ */
 int cPWM::StopB()
 {
 	std::cout << "PWMB"<< id << " stopped" << std::endl;
@@ -145,6 +208,10 @@ int cPWM::StopB()
 	return 1;
 }
 
+/**
+ * cPWM Destructor, stops the PWMss
+ *
+ */
 cPWM::~cPWM()
 {
 	std::cout << "PWMA"<< id << " stopped" << std::endl;

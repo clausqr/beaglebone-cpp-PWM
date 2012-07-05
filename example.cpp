@@ -1,10 +1,17 @@
-/*
- * main.cpp
+// $Id$
+/**
+ * @file example.cpp
+ * Example implementation of the Simple C++ class wrapper for beaglebone PWM eHRPWM interface
  *
+ * @author claus
  *  Created on: Jun 13, 2012
- *      Author: claus
+ *      Author: claus http://quadrotordiaries.blogspot.com
  *
  */
+// $Log$
+
+///  Example implementation of the Simple C++ class wrapper for beaglebone PWM eHRPWM interface
+
 #include "cPWM.h"
 #include <iostream>
 #include <unistd.h>

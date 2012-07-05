@@ -1,9 +1,14 @@
-/*
- * cPWM.h
+// $Id$
+/**
+ * @file cPWM.h
+ * Simple C++ class wrapper for beaglebone PWM eHRPWM interface header file
  *
+ * @author claus
  *  Created on: Jun 13, 2012
- *      Author: claus
+ *      Author: claus http://quadrotordiaries.blogspot.com
+ *
  */
+// $Log$
 
 #ifndef CPWM_H_
 #define CPWM_H_
@@ -23,6 +28,9 @@ private:
 	int runA;
 	int runB;
 	/*****************************************
+	 *
+	 * sysfs tree:
+	 *
 ehrpwm.0:0
 │   ├── duty_ns
 │   ├── period_ns
@@ -38,6 +46,7 @@ ehrpwm.0:0
 	 *
 std::stringstream sysfs_file;
 
+Define files to match sysfs tree:
 	 */
 		#define SYSFS_EHRPWM_PREFIX "/sys/class/pwm/ehrpwm."
 		#define SYSFS_EHRPWM_SUFFIX_A ":0"
