@@ -32,17 +32,17 @@ private:
 	 * sysfs tree:
 	 *
 ehrpwm.0:0
-│   ├── duty_ns
-│   ├── period_ns
-│   ├── polarity
-│   ├── request
-│   ├── run
+│   ├── duty_ns
+│   ├── period_ns
+│   ├── polarity
+│   ├── request
+│   ├── run
 ├── ehrpwm.0:1 -> ../../devices/platform/omap/ehrpwm.0/pwm/ehrpwm.0:1
-│   ├── duty_ns
-│   ├── period_ns
-│   ├── polarity
-│   ├── request
-│   ├── run
+│   ├── duty_ns
+│   ├── period_ns
+│   ├── polarity
+│   ├── request
+│   ├── run
 	 *
 std::stringstream sysfs_file;
 
@@ -51,15 +51,20 @@ Define files to match sysfs tree:
 		#define SYSFS_EHRPWM_PREFIX "/sys/class/pwm/ehrpwm."
 		#define SYSFS_EHRPWM_SUFFIX_A ":0"
 		#define SYSFS_EHRPWM_SUFFIX_B ":1"
-		#define SYSFS_EHRPWM_DUTY "duty_ns"
-		#define SYSFS_EHRPWM_PERIOD "period_ns"
+        #define SYSFS_EHRPWM_DUTY_NS "duty_ns"
+        #define SYSFS_EHRPWM_DUTY_PERCENT "duty_percent"
+        #define SYSFS_EHRPWM_PERIOD_NS "period_ns"
+        #define SYSFS_EHRPWM_PERIOD_FREQ "period_freq"
 		#define SYSFS_EHRPWM_POLARITY "polarity"
 		#define SYSFS_EHRPWM_RUN "run"
 		#define SYSFS_EHRPWM_REQUEST "request"
 
-		std::ofstream sysfsfid_dutyA;
-		std::ofstream sysfsfid_dutyB;
-		std::ofstream sysfsfid_period;
+        std::ofstream sysfsfid_dutyA_ns;
+        std::ofstream sysfsfid_dutyA_percent;
+        std::ofstream sysfsfid_dutyB_ns;
+        std::ofstream sysfsfid_dutyB_percent;
+        std::ofstream sysfsfid_period_ns;
+        std::ofstream sysfsfid_period_freq;
 		std::ofstream sysfsfid_polarityA;
 		std::ofstream sysfsfid_runA;
 		std::ofstream sysfsfid_requestA;
@@ -67,14 +72,19 @@ Define files to match sysfs tree:
 		std::ofstream sysfsfid_runB;
 		std::ofstream sysfsfid_requestB;
 
-
 public:
 	cPWM(int id);
 	virtual ~cPWM();
 
-	int DutyA(int d);
-	int DutyB(int d);
-	int Period(int d);
+    int DutyA_ns(int nanoseconds);
+    int DutyA_percent(int percent);  //TODO: check if floats are possible
+
+    int DutyB_ns(int nanoseconds);
+    int DutyB_percent(int percent); //TODO: check if floats are possible
+
+    int Period_ns(int nanoseconds);
+    int Period_freq(int freq_Hz);
+
 	int PolarityA(int d);
 	int RunA();
 	int StopA();

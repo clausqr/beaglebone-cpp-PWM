@@ -42,23 +42,37 @@ cPWM::cPWM(int id)
 	std::cout << "called cPWM constructor" << std::endl;
 	cPWM::id = id;
 
-	std::stringstream sysfsfile_dutyA;
-	std::stringstream sysfsfile_dutyB;
-	std::stringstream sysfsfile_period;
+    std::stringstream sysfsfile_dutyA_ns;
+    std::stringstream sysfsfile_dutyA_percent;
+
+    std::stringstream sysfsfile_dutyB_ns;
+    std::stringstream sysfsfile_dutyB_percent;
+
+    std::stringstream sysfsfile_period_ns;
+    std::stringstream sysfsfile_period_freq;
+
 	std::stringstream sysfsfile_polarityA;
 	std::stringstream sysfsfile_runA;
-	std::stringstream sysfsfile_requestA;
-	std::stringstream sysfsfile_polarityB;
+    std::stringstream sysfsfile_requestA;
+
+    std::stringstream sysfsfile_polarityB;
 	std::stringstream sysfsfile_runB;
 	std::stringstream sysfsfile_requestB;
 
-	sysfsfile_dutyA << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_DUTY;
-	sysfsfile_dutyB << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_DUTY;
-	sysfsfile_period << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_PERIOD;
+    sysfsfile_dutyA_ns << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_DUTY_NS;
+    sysfsfile_dutyA_percent << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_DUTY_PERCENT;
+
+    sysfsfile_dutyB_ns << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_DUTY_NS;
+    sysfsfile_dutyB_percent << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_DUTY_PERCENT;
+
+    sysfsfile_period_ns << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_PERIOD_NS;
+    sysfsfile_period_freq << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_PERIOD_FREQ;
+
 	sysfsfile_polarityA << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_POLARITY;
 	sysfsfile_runA << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_RUN;
 	sysfsfile_requestA << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_REQUEST;
-	sysfsfile_polarityB << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_POLARITY;
+
+    sysfsfile_polarityB << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_POLARITY;
 	sysfsfile_runB << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_RUN;
 	sysfsfile_requestB << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_REQUEST;
 
@@ -73,61 +87,110 @@ cPWM::cPWM(int id)
 	std::cout << "using RunB file " << sysfsfile_runB.str() << std::endl;
 	std::cout << "using RequestB file " << sysfsfile_requestB.str() << std::endl;
 
-	sysfsfid_dutyA.open(sysfsfile_dutyA.str().c_str());
-	sysfsfid_dutyB.open(sysfsfile_dutyB.str().c_str());
-	sysfsfid_period.open(sysfsfile_period.str().c_str());
+    sysfsfid_dutyA_ns.open(sysfsfile_dutyA_ns.str().c_str());
+    sysfsfid_dutyA_percent.open(sysfsfile_dutyA_percent.str().c_str());
+
+    sysfsfid_dutyB_ns.open(sysfsfile_dutyB_ns.str().c_str());
+    sysfsfid_dutyB_percent.open(sysfsfile_dutyB_percent.str().c_str());
+
+    sysfsfid_period_ns.open(sysfsfile_period_ns.str().c_str());
+    sysfsfid_period_freq.open(sysfsfile_period_freq.str().c_str());
+
 	sysfsfid_polarityA.open(sysfsfile_polarityA.str().c_str());
 	sysfsfid_runA.open(sysfsfile_runA.str().c_str());
-	sysfsfid_requestA.open(sysfsfile_requestA.str().c_str());
+
+    sysfsfid_requestA.open(sysfsfile_requestA.str().c_str());
 	sysfsfid_polarityB.open(sysfsfile_polarityB.str().c_str());
-	sysfsfid_runB.open(sysfsfile_runB.str().c_str());
+
+    sysfsfid_runB.open(sysfsfile_runB.str().c_str());
 	sysfsfid_requestB.open(sysfsfile_requestB.str().c_str());
-
-
 }
 
 /**
  * Set the duty cycle for A channel of the PWMss
  *
- * @param[in]	d	duty cycle time in nanoseconds for A channel
+ * @param[in]	nanoseconds:	duty cycle time in nanoseconds for A channel
  *
  */
-int cPWM::DutyA(int d)
+int cPWM::DutyA_ns(int nanoseconds)
 {
-		std::cout << "PWM"<< id << "A, duty cycle set to " << d << std::endl;
-		cPWM::dutyA = d;
-		sysfsfid_dutyA << d << std::endl;
+    std::cout << "PWM"<< id << "A, duty cycle set to " << nanoseconds << " ns" << std::endl;
+        cPWM::DutyA_ns = nanoseconds;
+        sysfsfid_dutyA_ns << nanoseconds << std::endl;
 		return 1;
-	}
+}
+
+/**
+ * Set the duty cycle for A channel of the PWMss
+ *
+ * @param[in]	percent:	duty cycle time in percent for A channel
+ *
+ */
+int cPWM::DutyA_percent(int percent)
+{
+        std::cout << "PWM"<< id << "A, duty cycle set to " << percent << " % " << std::endl;
+        cPWM::DutyA_percent = percent;
+        sysfsfid_dutyA_percent << percent << std::endl;
+        return 1;
+}
 
 /**
  * Set the duty cycle for B channel of the PWMss
  *
- * @param[in]	d	duty cycle time in nanoseconds for B channel
+ * @param[in]	nanoseconds:	duty cycle time in nanoseconds for B channel
  *
  */
-int cPWM::DutyB(int d)
+int cPWM::DutyB(int nanoseconds)
 {
-		std::cout << "PWM"<< id << "B, duty cycle set to " << d << std::endl;
-		cPWM::dutyB = d;
-		sysfsfid_dutyB << d << std::endl;
+        std::cout << "PWM"<< id << "B, duty cycle set to " << nanoseconds << " ns" << std::endl;
+        cPWM::dutyB_ns = nanoseconds;
+        sysfsfid_dutyB_ns << nanoseconds << std::endl;
 		return 1;
-	}
+}
+
+
+/**
+ * Set the duty cycle for B channel of the PWMss
+ *
+ * @param[in]	percent:	duty cycle time in percent for B channel
+ *
+ */
+int cPWM::DutyB_percent(int percent)
+{
+        std::cout << "PWM"<< id << "B, duty cycle set to " << percent << " %" << std::endl;
+        cPWM::DutyB_percent = percent;
+        sysfsfid_dutyB_percent << percent << std::endl;
+        return 1;
+}
 
 
 /**
  * Set the period for the PWMss
  *
- * @param[in]	d	period time in nanoseconds
+ * @param[in]	nanoseconds:	period time in nanoseconds
  *
  */
-int cPWM::Period(int d)
+int cPWM::Period_ns(int nanoseconds)
 {
-		std::cout << "PWM"<< id << ", period set to " << d << std::endl;
-		cPWM::period = d;
-		sysfsfid_period << d << std::endl;
+    std::cout << "PWM"<< id << ", period set to " << nanoseconds << " ns" << std::endl;
+        cPWM::Period_ns = nanoseconds;
+        sysfsfid_period_ns << nanoseconds << std::endl;
 		return 1;
-	}
+}
+
+/**
+ * Set the period for the PWMss
+ *
+ * @param[in]	freq_Hz:	PWM frequency in Hz
+ *
+ */
+int cPWM::Period_freq(int freq_Hz)
+{
+    std::cout << "PWM"<< id << ", period set to " << freq_Hz << " Hz" << std::endl;
+        cPWM::Period_freq = freq_Hz;
+        sysfsfid_period_freq << freq_Hz<< std::endl;
+        return 1;
+}
 
 /**
  * Set the polarity for the A channel of the PWMss
