@@ -39,7 +39,6 @@ cPWM::cPWM(int id)
 {
 	///TODO: 	Add clock selection (mmap). By now you must use setPWMReg.py method
 	///FIXME:	pin mux settings should be done here? or at a highet level?
-	std::cout << "called cPWM constructor" << std::endl;
 	cPWM::id = id;
 
     std::stringstream sysfsfile_dutyA_ns;
@@ -76,17 +75,6 @@ cPWM::cPWM(int id)
 	sysfsfile_runB << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_RUN;
 	sysfsfile_requestB << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_REQUEST;
 
-	std::cout << "new PWM with id " << id << std::endl;
-	std::cout << "using DutyA file " << sysfsfile_dutyA.str() << std::endl;
-	std::cout << "using DutyB file " << sysfsfile_dutyB.str() << std::endl;
-	std::cout << "using Period file " << sysfsfile_period.str() << std::endl;
-	std::cout << "using PolarityA file " << sysfsfile_polarityA.str() << std::endl;
-	std::cout << "using RunA file " << sysfsfile_runA.str() << std::endl;
-	std::cout << "using RequestA file " << sysfsfile_requestA.str() << std::endl;
-	std::cout << "using PolarityB file " << sysfsfile_polarityB.str() << std::endl;
-	std::cout << "using RunB file " << sysfsfile_runB.str() << std::endl;
-	std::cout << "using RequestB file " << sysfsfile_requestB.str() << std::endl;
-
     sysfsfid_dutyA_ns.open(sysfsfile_dutyA_ns.str().c_str());
     sysfsfid_dutyA_percent.open(sysfsfile_dutyA_percent.str().c_str());
 
@@ -114,7 +102,6 @@ cPWM::cPWM(int id)
  */
 int cPWM::DutyA_ns(int nanoseconds)
 {
-    std::cout << "PWM"<< id << "A, duty cycle set to " << nanoseconds << " ns" << std::endl;
         cPWM::DutyA_ns = nanoseconds;
         sysfsfid_dutyA_ns << nanoseconds << std::endl;
 		return 1;
@@ -128,7 +115,6 @@ int cPWM::DutyA_ns(int nanoseconds)
  */
 int cPWM::DutyA_percent(int percent)
 {
-        std::cout << "PWM"<< id << "A, duty cycle set to " << percent << " % " << std::endl;
         cPWM::DutyA_percent = percent;
         sysfsfid_dutyA_percent << percent << std::endl;
         return 1;
@@ -142,7 +128,6 @@ int cPWM::DutyA_percent(int percent)
  */
 int cPWM::DutyB(int nanoseconds)
 {
-        std::cout << "PWM"<< id << "B, duty cycle set to " << nanoseconds << " ns" << std::endl;
         cPWM::dutyB_ns = nanoseconds;
         sysfsfid_dutyB_ns << nanoseconds << std::endl;
 		return 1;
@@ -157,7 +142,6 @@ int cPWM::DutyB(int nanoseconds)
  */
 int cPWM::DutyB_percent(int percent)
 {
-        std::cout << "PWM"<< id << "B, duty cycle set to " << percent << " %" << std::endl;
         cPWM::DutyB_percent = percent;
         sysfsfid_dutyB_percent << percent << std::endl;
         return 1;
@@ -172,7 +156,6 @@ int cPWM::DutyB_percent(int percent)
  */
 int cPWM::Period_ns(int nanoseconds)
 {
-    std::cout << "PWM"<< id << ", period set to " << nanoseconds << " ns" << std::endl;
         cPWM::Period_ns = nanoseconds;
         sysfsfid_period_ns << nanoseconds << std::endl;
 		return 1;
@@ -186,7 +169,6 @@ int cPWM::Period_ns(int nanoseconds)
  */
 int cPWM::Period_freq(int freq_Hz)
 {
-    std::cout << "PWM"<< id << ", period set to " << freq_Hz << " Hz" << std::endl;
         cPWM::Period_freq = freq_Hz;
         sysfsfid_period_freq << freq_Hz<< std::endl;
         return 1;
@@ -200,7 +182,6 @@ int cPWM::Period_freq(int freq_Hz)
  */
 int cPWM::PolarityA(int d)
 {
-		std::cout << "PWMA"<< id << ", polarity set to " << d << std::endl;
 		cPWM::polarityA = d;
 		sysfsfid_polarityA << d << std::endl;
 		return 1;
@@ -213,7 +194,6 @@ int cPWM::PolarityA(int d)
  */
 int cPWM::RunA()
 {
-	std::cout << "PWMA"<< id << " started" << std::endl;
 	sysfsfid_runA << "1" << std::endl;
 	cPWM::runA = 1;
 	return 1;
@@ -226,7 +206,6 @@ int cPWM::RunA()
  */
 int cPWM::StopA()
 {
-	std::cout << "PWMA"<< id << " stopped" << std::endl;
 	sysfsfid_runA << "0" << std::endl;
 	cPWM::runA = 0;
 	return 1;
@@ -240,7 +219,6 @@ int cPWM::StopA()
  */
 int cPWM::PolarityB(int d)
 {
-		std::cout << "PWMB"<< id << ", polarity set to " << d << std::endl;
 		cPWM::polarityB = d;
 		sysfsfid_polarityB << d << std::endl;
 		return 1;
@@ -253,7 +231,6 @@ int cPWM::PolarityB(int d)
 
 int cPWM::RunB()
 {
-	std::cout << "PWMB"<< id << " started" << std::endl;
 	cPWM::runB = 1;
 	sysfsfid_runB << "1" << std::endl;
 	return 1;
@@ -265,7 +242,6 @@ int cPWM::RunB()
  */
 int cPWM::StopB()
 {
-	std::cout << "PWMB"<< id << " stopped" << std::endl;
 	cPWM::runB = 0;
 	sysfsfid_runB << "0" << std::endl;
 	return 1;
@@ -277,11 +253,9 @@ int cPWM::StopB()
  */
 cPWM::~cPWM()
 {
-	std::cout << "PWMA"<< id << " stopped" << std::endl;
 	sysfsfid_runA << "0" << std::endl;
-	std::cout << "PWMB"<< id << " stopped" << std::endl;
+
 	sysfsfid_runB << "0" << std::endl;
-	std::cout << "called cPWM destructor of cPWM " << id << std::endl;
 }
 
 } /* namespace cPWM */
