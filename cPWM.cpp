@@ -111,7 +111,7 @@ int cPWM::DutyA_ns(unsigned int nanoseconds)
  * @param[in]	percent:	duty cycle time in percent for A channel
  *
  */
-int cPWM::DutyA_percent(int percent)
+int cPWM::DutyA_percent(unsigned int percent)
 {
         cPWM::DutyA_percent = percent;
         sysfsfid_dutyA_percent << percent << std::endl;

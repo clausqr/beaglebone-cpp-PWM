@@ -83,7 +83,7 @@ public:
     virtual ~cPWM();
 
     int DutyA_ns(unsigned int nanoseconds);
-    int DutyA_percent(int percent);  //TODO: check if floats are possible
+    int DutyA_percent(unsigned int percent);  //TODO: check if floats are possible
 
     int DutyB_ns(unsigned int nanoseconds);
     int DutyB_percent(unsigned int percent); //TODO: check if floats are possible
