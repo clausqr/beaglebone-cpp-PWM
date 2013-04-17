@@ -82,21 +82,21 @@ public:
 	cPWM(int id);
     virtual ~cPWM();
 
-    int DutyA_ns(unsigned int nanoseconds);
-    int DutyA_percent(unsigned int percent);  //TODO: check if floats are possible
+    void DutyA_ns(unsigned int nanoseconds);
+    void DutyA_percent(unsigned int percent);  //TODO: check if floats are possible
 
-    int DutyB_ns(unsigned int nanoseconds);
-    int DutyB_percent(unsigned int percent); //TODO: check if floats are possible
+    void DutyB_ns(unsigned int nanoseconds);
+    void DutyB_percent(unsigned int percent); //TODO: check if floats are possible
 
-    int Period_ns(unsigned int nanoseconds);
-    int Period_freq(unsigned int freq_Hz);
+    void Period_ns(unsigned int nanoseconds);
+    void Period_freq(unsigned int freq_Hz);
 
-    int PolarityA(cPWM::Polarity polarity);
-	int RunA();
-	int StopA();
-    int PolarityB(cPWM::Polarity polarity);
-	int RunB();
-    int StopB();
+    void PolarityA(cPWM::Polarity polarity);
+    void RunA();
+    void StopA();
+    void PolarityB(cPWM::Polarity polarity);
+    void RunB();
+    void StopB();
 };
 
 } /* namespace cPWM */

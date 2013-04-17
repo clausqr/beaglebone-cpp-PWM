@@ -13,7 +13,7 @@
 ///  Simple C++ class wrapper for beaglebone PWM eHRPWM interface
 
 #include "cPWM.h"
-#include <iostream>
+#include <stdexcept>
 #include <fstream>
 #include <sstream>
 
@@ -98,11 +98,13 @@ cPWM::cPWM(int id)
  * @param[in]	nanoseconds:	duty cycle time in nanoseconds for A channel
  *
  */
-int cPWM::DutyA_ns(unsigned int nanoseconds)
+void cPWM::DutyA_ns(unsigned int nanoseconds)
 {
-        cPWM::DutyA_ns = nanoseconds;
-        sysfsfid_dutyA_ns << nanoseconds << std::endl;
-		return 1;
+    if(nanoseconds > cPWM::Period_ns)
+        throw std::out_of_range("DutyA_ns: ");
+
+    cPWM::DutyA_ns = nanoseconds;
+    sysfsfid_dutyA_ns << nanoseconds << std::endl;
 }
 
 /**
@@ -111,11 +113,13 @@ int cPWM::DutyA_ns(unsigned int nanoseconds)
  * @param[in]	percent:	duty cycle time in percent for A channel
  *
  */
-int cPWM::DutyA_percent(unsigned int percent)
+void cPWM::DutyA_percent(unsigned int percent)
 {
+    if(percent > 100)
+        throw std::out_of_range("DutyA_percent: ");
+
         cPWM::DutyA_percent = percent;
         sysfsfid_dutyA_percent << percent << std::endl;
-        return 1;
 }
 
 /**
@@ -124,11 +128,13 @@ int cPWM::DutyA_percent(unsigned int percent)
  * @param[in]	nanoseconds:	duty cycle time in nanoseconds for B channel
  *
  */
-int cPWM::DutyB_ns(unsigned int nanoseconds)
+void cPWM::DutyB_ns(unsigned int nanoseconds)
 {
-        cPWM::dutyB_ns = nanoseconds;
-        sysfsfid_dutyB_ns << nanoseconds << std::endl;
-		return 1;
+    if(nanoseconds > cPWM::Period_ns)
+        throw std::out_of_range("DutyB_ns: ");
+
+    cPWM::dutyB_ns = nanoseconds;
+    sysfsfid_dutyB_ns << nanoseconds << std::endl;
 }
 
 
@@ -138,11 +144,13 @@ int cPWM::DutyB_ns(unsigned int nanoseconds)
  * @param[in]	percent:	duty cycle time in percent for B channel
  *
  */
-int cPWM::DutyB_percent(unsigned int percent)
+void cPWM::DutyB_percent(unsigned int percent)
 {
-        cPWM::DutyB_percent = percent;
-        sysfsfid_dutyB_percent << percent << std::endl;
-        return 1;
+    if(percent > 100)
+        throw std::out_of_range("DutyB_percent: ");
+
+    cPWM::DutyB_percent = percent;
+    sysfsfid_dutyB_percent << percent << std::endl;
 }
 
 
@@ -152,11 +160,10 @@ int cPWM::DutyB_percent(unsigned int percent)
  * @param[in]	nanoseconds:	period time in nanoseconds
  *
  */
-int cPWM::Period_ns(unsigned int nanoseconds)
+void cPWM::Period_ns(unsigned int nanoseconds)
 {
         cPWM::Period_ns = nanoseconds;
         sysfsfid_period_ns << nanoseconds << std::endl;
-		return 1;
 }
 
 /**
@@ -165,11 +172,10 @@ int cPWM::Period_ns(unsigned int nanoseconds)
  * @param[in]	freq_Hz:	PWM frequency in Hz
  *
  */
-int cPWM::Period_freq(unsigned int freq_Hz)
+void cPWM::Period_freq(unsigned int freq_Hz)
 {
         cPWM::Period_freq = freq_Hz;
         sysfsfid_period_freq << freq_Hz<< std::endl;
-        return 1;
 }
 
 /**
@@ -178,7 +184,7 @@ int cPWM::Period_freq(unsigned int freq_Hz)
  * @param[in]	polarity  polarity
  *
  */
-int cPWM::PolarityA(Polarity polarity)
+void cPWM::PolarityA(Polarity polarity)
 {
         switch (polarity)
         {
@@ -188,8 +194,6 @@ int cPWM::PolarityA(Polarity polarity)
                           break;
         }
         cPWM::polarityA = polarity;
-
-		return 1;
 }
 
 /**
@@ -197,11 +201,10 @@ int cPWM::PolarityA(Polarity polarity)
  *
  *
  */
-int cPWM::RunA()
+void cPWM::RunA()
 {
 	sysfsfid_runA << "1" << std::endl;
 	cPWM::runA = 1;
-	return 1;
 }
 
 /**
@@ -209,11 +212,10 @@ int cPWM::RunA()
  *
  *
  */
-int cPWM::StopA()
+void cPWM::StopA()
 {
 	sysfsfid_runA << "0" << std::endl;
 	cPWM::runA = 0;
-	return 1;
 }
 
 /**
@@ -222,7 +224,7 @@ int cPWM::StopA()
  * @param[in]	polarity  polarity
  *
  */
-int cPWM::PolarityB(Polarity polarity)
+void cPWM::PolarityB(Polarity polarity)
 {
     switch (polarity)
     {
@@ -232,8 +234,6 @@ int cPWM::PolarityB(Polarity polarity)
                       break;
     }
     cPWM::polarityB = polarity;
-
-    return 1;
 }
 
 /**
@@ -241,22 +241,20 @@ int cPWM::PolarityB(Polarity polarity)
  *
  */
 
-int cPWM::RunB()
+void cPWM::RunB()
 {
 	cPWM::runB = 1;
 	sysfsfid_runB << "1" << std::endl;
-	return 1;
 }
 
 /**
  * Stop the B channel
  *
  */
-int cPWM::StopB()
+void cPWM::StopB()
 {
 	cPWM::runB = 0;
 	sysfsfid_runB << "0" << std::endl;
-	return 1;
 }
 
 /**
