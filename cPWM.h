@@ -19,15 +19,15 @@ namespace cPWM {
 
 class cPWM {
 private:
-	int id;
-	int dutyA;
-	int dutyB;
-	int period;
-	int polarityA;
-	int polarityB;
-	int runA;
-	int runB;
-	/*****************************************
+    int id;
+    int dutyA;
+    int dutyB;
+    int period;
+    cPWM::Polarity polarityA;
+    cPWM::Polarity polarityB;
+    int runA;
+    int runB;
+    /*****************************************
 	 *
 	 * sysfs tree:
 	 *
@@ -73,8 +73,14 @@ Define files to match sysfs tree:
 		std::ofstream sysfsfid_requestB;
 
 public:
+    enum Polarity
+    {
+        ActiveHigh,
+        ActiveLow
+    };
+
 	cPWM(int id);
-	virtual ~cPWM();
+    virtual ~cPWM();
 
     int DutyA_ns(int nanoseconds);
     int DutyA_percent(int percent);  //TODO: check if floats are possible
@@ -85,12 +91,12 @@ public:
     int Period_ns(int nanoseconds);
     int Period_freq(int freq_Hz);
 
-	int PolarityA(int d);
+    int PolarityA(cPWM::Polarity polarity);
 	int RunA();
 	int StopA();
-	int PolarityB(int d);
+    int PolarityB(cPWM::Polarity polarity);
 	int RunB();
-	int StopB();
+    int StopB();
 };
 
 } /* namespace cPWM */

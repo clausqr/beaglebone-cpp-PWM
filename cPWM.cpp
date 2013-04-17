@@ -17,8 +17,6 @@
 #include <fstream>
 #include <sstream>
 
-//using namespace std;
-
 namespace cPWM {
 
 
@@ -177,13 +175,20 @@ int cPWM::Period_freq(int freq_Hz)
 /**
  * Set the polarity for the A channel of the PWMss
  *
- * @param[in]	d	polarity
+ * @param[in]	polarity  polarity
  *
  */
-int cPWM::PolarityA(int d)
+int cPWM::PolarityA(Polarity polarity)
 {
-		cPWM::polarityA = d;
-		sysfsfid_polarityA << d << std::endl;
+        switch (polarity)
+        {
+        case ActiveHigh:  sysfsfid_polarityA << 1 << std::endl;
+                          break;
+        case ActiveLow:   sysfsfid_polarityA << 0 << std::endl;
+                          break;
+        }
+        cPWM::polarityA = polarity;
+
 		return 1;
 	}
 
@@ -214,14 +219,21 @@ int cPWM::StopA()
 /**
  * Set the polarity for the B channel of the PWMss
  *
- * @param[in]	d	polarity
+ * @param[in]	polarity  polarity
  *
  */
-int cPWM::PolarityB(int d)
+int cPWM::PolarityB(Polarity polarity)
 {
-		cPWM::polarityB = d;
-		sysfsfid_polarityB << d << std::endl;
-		return 1;
+    switch (polarity)
+    {
+    case ActiveHigh:  sysfsfid_polarityB << 1 << std::endl;
+                      break;
+    case ActiveLow:   sysfsfid_polarityB << 0 << std::endl;
+                      break;
+    }
+    cPWM::polarityB = polarity;
+
+    return 1;
 	}
 
 /**
