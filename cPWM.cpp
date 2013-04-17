@@ -98,7 +98,7 @@ cPWM::cPWM(int id)
  * @param[in]	nanoseconds:	duty cycle time in nanoseconds for A channel
  *
  */
-int cPWM::DutyA_ns(int nanoseconds)
+int cPWM::DutyA_ns(unsigned int nanoseconds)
 {
         cPWM::DutyA_ns = nanoseconds;
         sysfsfid_dutyA_ns << nanoseconds << std::endl;
@@ -124,7 +124,7 @@ int cPWM::DutyA_percent(int percent)
  * @param[in]	nanoseconds:	duty cycle time in nanoseconds for B channel
  *
  */
-int cPWM::DutyB(int nanoseconds)
+int cPWM::DutyB_ns(unsigned int nanoseconds)
 {
         cPWM::dutyB_ns = nanoseconds;
         sysfsfid_dutyB_ns << nanoseconds << std::endl;
@@ -138,7 +138,7 @@ int cPWM::DutyB(int nanoseconds)
  * @param[in]	percent:	duty cycle time in percent for B channel
  *
  */
-int cPWM::DutyB_percent(int percent)
+int cPWM::DutyB_percent(unsigned int percent)
 {
         cPWM::DutyB_percent = percent;
         sysfsfid_dutyB_percent << percent << std::endl;
@@ -152,7 +152,7 @@ int cPWM::DutyB_percent(int percent)
  * @param[in]	nanoseconds:	period time in nanoseconds
  *
  */
-int cPWM::Period_ns(int nanoseconds)
+int cPWM::Period_ns(unsigned int nanoseconds)
 {
         cPWM::Period_ns = nanoseconds;
         sysfsfid_period_ns << nanoseconds << std::endl;
@@ -165,7 +165,7 @@ int cPWM::Period_ns(int nanoseconds)
  * @param[in]	freq_Hz:	PWM frequency in Hz
  *
  */
-int cPWM::Period_freq(int freq_Hz)
+int cPWM::Period_freq(unsigned int freq_Hz)
 {
         cPWM::Period_freq = freq_Hz;
         sysfsfid_period_freq << freq_Hz<< std::endl;
@@ -190,7 +190,7 @@ int cPWM::PolarityA(Polarity polarity)
         cPWM::polarityA = polarity;
 
 		return 1;
-	}
+}
 
 /**
  * Set the A channel to run status
@@ -234,7 +234,7 @@ int cPWM::PolarityB(Polarity polarity)
     cPWM::polarityB = polarity;
 
     return 1;
-	}
+}
 
 /**
  * Set the B channel to run
