@@ -39,13 +39,13 @@ int main()
 	for (int i=0; i<3; i++)
 	{
 		//	delete(a[i]);
-		a[i]->Period(20000000);
+        a[i]->Period_ns(20000000);
 		//usleep(100000);	//pausa de 0.1s=100,000us
-		a[i]->DutyA(  1000000);
+        a[i]->DutyA_ns(1000000);
 		//usleep(100000);	//pausa de 0.1s=100,000us
-		a[i]->DutyB(  1000000);
+        a[i]->DutyB_percent(1000000);
 		//usleep(100000);	//pausa de 0.1s=100,000us
-		a[i]->PolarityA(1);
+        a[i]->PolarityA(cPWM::cPWM::ActiveHigh);
 		//usleep(100000);	//pausa de 0.1s=100,000us
 		a[i]->RunA();
 		//usleep(100000);	//pausa de 0.1s=100,000us
