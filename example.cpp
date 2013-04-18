@@ -43,7 +43,7 @@ int main()
 		//usleep(100000);	//pausa de 0.1s=100,000us
         a[i]->DutyA_ns(1000000);
 		//usleep(100000);	//pausa de 0.1s=100,000us
-        a[i]->DutyB_percent(1000000);
+        a[i]->DutyB_percent(50);
 		//usleep(100000);	//pausa de 0.1s=100,000us
         a[i]->PolarityA(cPWM::cPWM::ActiveHigh);
 		//usleep(100000);	//pausa de 0.1s=100,000us
