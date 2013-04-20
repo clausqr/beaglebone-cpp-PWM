@@ -13,11 +13,9 @@
 ///  Simple C++ class wrapper for beaglebone PWM eHRPWM interface
 
 #include "cPWM.h"
-#include <iostream>
+#include <stdexcept>
 #include <fstream>
 #include <sstream>
-
-//using namespace std;
 
 namespace cPWM {
 
@@ -39,121 +37,174 @@ cPWM::cPWM(int id)
 {
 	///TODO: 	Add clock selection (mmap). By now you must use setPWMReg.py method
 	///FIXME:	pin mux settings should be done here? or at a highet level?
-	std::cout << "called cPWM constructor" << std::endl;
 	cPWM::id = id;
 
-	std::stringstream sysfsfile_dutyA;
-	std::stringstream sysfsfile_dutyB;
-	std::stringstream sysfsfile_period;
+    std::stringstream sysfsfile_dutyA_ns;
+    std::stringstream sysfsfile_dutyA_percent;
+
+    std::stringstream sysfsfile_dutyB_ns;
+    std::stringstream sysfsfile_dutyB_percent;
+
+    std::stringstream sysfsfile_period_ns;
+    std::stringstream sysfsfile_period_freq;
+
 	std::stringstream sysfsfile_polarityA;
 	std::stringstream sysfsfile_runA;
-	std::stringstream sysfsfile_requestA;
-	std::stringstream sysfsfile_polarityB;
+    std::stringstream sysfsfile_requestA;
+
+    std::stringstream sysfsfile_polarityB;
 	std::stringstream sysfsfile_runB;
 	std::stringstream sysfsfile_requestB;
 
-	sysfsfile_dutyA << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_DUTY;
-	sysfsfile_dutyB << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_DUTY;
-	sysfsfile_period << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_PERIOD;
+    sysfsfile_dutyA_ns << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_DUTY_NS;
+    sysfsfile_dutyA_percent << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_DUTY_PERCENT;
+
+    sysfsfile_dutyB_ns << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_DUTY_NS;
+    sysfsfile_dutyB_percent << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_DUTY_PERCENT;
+
+    sysfsfile_period_ns << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_PERIOD_NS;
+    sysfsfile_period_freq << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_PERIOD_FREQ;
+
 	sysfsfile_polarityA << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_POLARITY;
 	sysfsfile_runA << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_RUN;
 	sysfsfile_requestA << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_A << "/" << SYSFS_EHRPWM_REQUEST;
-	sysfsfile_polarityB << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_POLARITY;
+
+    sysfsfile_polarityB << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_POLARITY;
 	sysfsfile_runB << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_RUN;
 	sysfsfile_requestB << SYSFS_EHRPWM_PREFIX << id << SYSFS_EHRPWM_SUFFIX_B << "/" << SYSFS_EHRPWM_REQUEST;
 
-	std::cout << "new PWM with id " << id << std::endl;
-	std::cout << "using DutyA file " << sysfsfile_dutyA.str() << std::endl;
-	std::cout << "using DutyB file " << sysfsfile_dutyB.str() << std::endl;
-	std::cout << "using Period file " << sysfsfile_period.str() << std::endl;
-	std::cout << "using PolarityA file " << sysfsfile_polarityA.str() << std::endl;
-	std::cout << "using RunA file " << sysfsfile_runA.str() << std::endl;
-	std::cout << "using RequestA file " << sysfsfile_requestA.str() << std::endl;
-	std::cout << "using PolarityB file " << sysfsfile_polarityB.str() << std::endl;
-	std::cout << "using RunB file " << sysfsfile_runB.str() << std::endl;
-	std::cout << "using RequestB file " << sysfsfile_requestB.str() << std::endl;
+    sysfsfid_dutyA_ns.open(sysfsfile_dutyA_ns.str().c_str());
+    sysfsfid_dutyA_percent.open(sysfsfile_dutyA_percent.str().c_str());
 
-	sysfsfid_dutyA.open(sysfsfile_dutyA.str().c_str());
-	sysfsfid_dutyB.open(sysfsfile_dutyB.str().c_str());
-	sysfsfid_period.open(sysfsfile_period.str().c_str());
+    sysfsfid_dutyB_ns.open(sysfsfile_dutyB_ns.str().c_str());
+    sysfsfid_dutyB_percent.open(sysfsfile_dutyB_percent.str().c_str());
+
+    sysfsfid_period_ns.open(sysfsfile_period_ns.str().c_str());
+    sysfsfid_period_freq.open(sysfsfile_period_freq.str().c_str());
+
 	sysfsfid_polarityA.open(sysfsfile_polarityA.str().c_str());
 	sysfsfid_runA.open(sysfsfile_runA.str().c_str());
-	sysfsfid_requestA.open(sysfsfile_requestA.str().c_str());
+
+    sysfsfid_requestA.open(sysfsfile_requestA.str().c_str());
 	sysfsfid_polarityB.open(sysfsfile_polarityB.str().c_str());
-	sysfsfid_runB.open(sysfsfile_runB.str().c_str());
+
+    sysfsfid_runB.open(sysfsfile_runB.str().c_str());
 	sysfsfid_requestB.open(sysfsfile_requestB.str().c_str());
-
-
 }
 
 /**
  * Set the duty cycle for A channel of the PWMss
  *
- * @param[in]	d	duty cycle time in nanoseconds for A channel
+ * @param[in]	nanoseconds:	duty cycle time in nanoseconds for A channel
  *
  */
-int cPWM::DutyA(int d)
+void cPWM::DutyA_ns(unsigned int nanoseconds)
 {
-		std::cout << "PWM"<< id << "A, duty cycle set to " << d << std::endl;
-		cPWM::dutyA = d;
-		sysfsfid_dutyA << d << std::endl;
-		return 1;
-	}
+    if(nanoseconds > cPWM::period)
+        throw std::out_of_range("DutyA_ns: ");
+
+    cPWM::dutyA = nanoseconds;
+    sysfsfid_dutyA_ns << nanoseconds << std::endl;
+}
+
+/**
+ * Set the duty cycle for A channel of the PWMss
+ *
+ * @param[in]	percent:	duty cycle time in percent for A channel
+ *
+ */
+void cPWM::DutyA_percent(unsigned int percent)
+{
+    if(percent > 100)
+        throw std::out_of_range("DutyA_percent: ");
+
+        sysfsfid_dutyA_percent << percent << std::endl;
+}
 
 /**
  * Set the duty cycle for B channel of the PWMss
  *
- * @param[in]	d	duty cycle time in nanoseconds for B channel
+ * @param[in]	nanoseconds:	duty cycle time in nanoseconds for B channel
  *
  */
-int cPWM::DutyB(int d)
+void cPWM::DutyB_ns(unsigned int nanoseconds)
 {
-		std::cout << "PWM"<< id << "B, duty cycle set to " << d << std::endl;
-		cPWM::dutyB = d;
-		sysfsfid_dutyB << d << std::endl;
-		return 1;
-	}
+    if(nanoseconds > cPWM::period)
+        throw std::out_of_range("DutyB_ns: ");
+
+    cPWM::dutyB = nanoseconds;
+    sysfsfid_dutyB_ns << nanoseconds << std::endl;
+}
+
+
+/**
+ * Set the duty cycle for B channel of the PWMss
+ *
+ * @param[in]	percent:	duty cycle time in percent for B channel
+ *
+ */
+void cPWM::DutyB_percent(unsigned int percent)
+{
+    if(percent > 100)
+        throw std::out_of_range("DutyB_percent: ");
+
+    sysfsfid_dutyB_percent << percent << std::endl;
+}
 
 
 /**
  * Set the period for the PWMss
  *
- * @param[in]	d	period time in nanoseconds
+ * @param[in]	nanoseconds:	period time in nanoseconds
  *
  */
-int cPWM::Period(int d)
+void cPWM::Period_ns(unsigned int nanoseconds)
 {
-		std::cout << "PWM"<< id << ", period set to " << d << std::endl;
-		cPWM::period = d;
-		sysfsfid_period << d << std::endl;
-		return 1;
-	}
+        cPWM::period  = nanoseconds;
+        cPWM::freq_Hz = 1000000000 / nanoseconds;
+        sysfsfid_period_ns << nanoseconds << std::endl;
+}
+
+/**
+ * Set the period for the PWMss
+ *
+ * @param[in]	freq_Hz:	PWM frequency in Hz
+ *
+ */
+void cPWM::Period_freq(unsigned int freq_Hz)
+{
+        cPWM::freq_Hz = freq_Hz;
+        cPWM::period  = 1000000000 / freq_Hz;
+        sysfsfid_period_freq << freq_Hz<< std::endl;
+}
 
 /**
  * Set the polarity for the A channel of the PWMss
  *
- * @param[in]	d	polarity
+ * @param[in]	polarity  polarity
  *
  */
-int cPWM::PolarityA(int d)
+void cPWM::PolarityA(Polarity polarity)
 {
-		std::cout << "PWMA"<< id << ", polarity set to " << d << std::endl;
-		cPWM::polarityA = d;
-		sysfsfid_polarityA << d << std::endl;
-		return 1;
-	}
+        switch (polarity)
+        {
+        case ActiveHigh:  sysfsfid_polarityA << 1 << std::endl;
+                          break;
+        case ActiveLow:   sysfsfid_polarityA << 0 << std::endl;
+                          break;
+        }
+        cPWM::polarityA = polarity;
+}
 
 /**
  * Set the A channel to run status
  *
  *
  */
-int cPWM::RunA()
+void cPWM::RunA()
 {
-	std::cout << "PWMA"<< id << " started" << std::endl;
 	sysfsfid_runA << "1" << std::endl;
 	cPWM::runA = 1;
-	return 1;
 }
 
 /**
@@ -161,51 +212,49 @@ int cPWM::RunA()
  *
  *
  */
-int cPWM::StopA()
+void cPWM::StopA()
 {
-	std::cout << "PWMA"<< id << " stopped" << std::endl;
 	sysfsfid_runA << "0" << std::endl;
 	cPWM::runA = 0;
-	return 1;
 }
 
 /**
  * Set the polarity for the B channel of the PWMss
  *
- * @param[in]	d	polarity
+ * @param[in]	polarity  polarity
  *
  */
-int cPWM::PolarityB(int d)
+void cPWM::PolarityB(Polarity polarity)
 {
-		std::cout << "PWMB"<< id << ", polarity set to " << d << std::endl;
-		cPWM::polarityB = d;
-		sysfsfid_polarityB << d << std::endl;
-		return 1;
-	}
+    switch (polarity)
+    {
+    case ActiveHigh:  sysfsfid_polarityB << 1 << std::endl;
+                      break;
+    case ActiveLow:   sysfsfid_polarityB << 0 << std::endl;
+                      break;
+    }
+    cPWM::polarityB = polarity;
+}
 
 /**
  * Set the B channel to run
  *
  */
 
-int cPWM::RunB()
+void cPWM::RunB()
 {
-	std::cout << "PWMB"<< id << " started" << std::endl;
 	cPWM::runB = 1;
 	sysfsfid_runB << "1" << std::endl;
-	return 1;
 }
 
 /**
  * Stop the B channel
  *
  */
-int cPWM::StopB()
+void cPWM::StopB()
 {
-	std::cout << "PWMB"<< id << " stopped" << std::endl;
 	cPWM::runB = 0;
 	sysfsfid_runB << "0" << std::endl;
-	return 1;
 }
 
 /**
@@ -214,11 +263,9 @@ int cPWM::StopB()
  */
 cPWM::~cPWM()
 {
-	std::cout << "PWMA"<< id << " stopped" << std::endl;
 	sysfsfid_runA << "0" << std::endl;
-	std::cout << "PWMB"<< id << " stopped" << std::endl;
+
 	sysfsfid_runB << "0" << std::endl;
-	std::cout << "called cPWM destructor of cPWM " << id << std::endl;
 }
 
 } /* namespace cPWM */
