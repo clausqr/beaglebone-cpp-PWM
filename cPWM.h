@@ -18,13 +18,22 @@
 namespace cPWM {
 
 class cPWM {
+
+public:
+    enum Polarity
+    {
+        ActiveHigh,
+        ActiveLow
+    };
+
 private:
     int id;
     int dutyA;
     int dutyB;
     int period;
-    cPWM::Polarity polarityA;
-    cPWM::Polarity polarityB;
+    int freq_Hz;
+    enum cPWM::Polarity polarityA;
+    enum cPWM::Polarity polarityB;
     int runA;
     int runB;
     /*****************************************
@@ -73,11 +82,6 @@ Define files to match sysfs tree:
 		std::ofstream sysfsfid_requestB;
 
 public:
-    enum Polarity
-    {
-        ActiveHigh,
-        ActiveLow
-    };
 
 	cPWM(int id);
     virtual ~cPWM();

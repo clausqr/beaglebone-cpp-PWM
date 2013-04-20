@@ -100,10 +100,10 @@ cPWM::cPWM(int id)
  */
 void cPWM::DutyA_ns(unsigned int nanoseconds)
 {
-    if(nanoseconds > cPWM::Period_ns)
+    if(nanoseconds > cPWM::period)
         throw std::out_of_range("DutyA_ns: ");
 
-    cPWM::DutyA_ns = nanoseconds;
+    cPWM::dutyA = nanoseconds;
     sysfsfid_dutyA_ns << nanoseconds << std::endl;
 }
 
@@ -118,7 +118,6 @@ void cPWM::DutyA_percent(unsigned int percent)
     if(percent > 100)
         throw std::out_of_range("DutyA_percent: ");
 
-        cPWM::DutyA_percent = percent;
         sysfsfid_dutyA_percent << percent << std::endl;
 }
 
@@ -130,10 +129,10 @@ void cPWM::DutyA_percent(unsigned int percent)
  */
 void cPWM::DutyB_ns(unsigned int nanoseconds)
 {
-    if(nanoseconds > cPWM::Period_ns)
+    if(nanoseconds > cPWM::period)
         throw std::out_of_range("DutyB_ns: ");
 
-    cPWM::dutyB_ns = nanoseconds;
+    cPWM::dutyB = nanoseconds;
     sysfsfid_dutyB_ns << nanoseconds << std::endl;
 }
 
@@ -149,7 +148,6 @@ void cPWM::DutyB_percent(unsigned int percent)
     if(percent > 100)
         throw std::out_of_range("DutyB_percent: ");
 
-    cPWM::DutyB_percent = percent;
     sysfsfid_dutyB_percent << percent << std::endl;
 }
 
@@ -162,7 +160,8 @@ void cPWM::DutyB_percent(unsigned int percent)
  */
 void cPWM::Period_ns(unsigned int nanoseconds)
 {
-        cPWM::Period_ns = nanoseconds;
+        cPWM::period  = nanoseconds;
+        cPWM::freq_Hz = 1000000000 / nanoseconds;
         sysfsfid_period_ns << nanoseconds << std::endl;
 }
 
@@ -174,7 +173,8 @@ void cPWM::Period_ns(unsigned int nanoseconds)
  */
 void cPWM::Period_freq(unsigned int freq_Hz)
 {
-        cPWM::Period_freq = freq_Hz;
+        cPWM::freq_Hz = freq_Hz;
+        cPWM::period  = 1000000000 / freq_Hz;
         sysfsfid_period_freq << freq_Hz<< std::endl;
 }
 
